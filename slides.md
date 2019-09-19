@@ -1,9 +1,43 @@
+---
+theme: default
+style: |
+  section { font-size: 39px; }
+---
+
 # Sam Saffron
 ## co-founder Discourse
 
 ---
 
 # Who is Sam?
+
+---
+
+![bg left height:70%](samiam.png)
+
+##  co-founder Discourse
+##  Huge Ruby fan
+##  Huge fan of making Ruby fast
+
+---
+
+![bg width:55%](discourse0.png)
+
+---
+
+![bg width:55%](discourse1.png)
+
+---
+
+![bg width:55%](discourse2.png)
+
+---
+
+![bg width:55%](discourse3.png)
+
+---
+
+![bg width:55%](discourse4.png)
 
 ---
 
@@ -16,23 +50,19 @@
 
 ---
 
-### How we host?
+### About this talk
 
-- Early adopters of Docker
-- App containers with Nginx/Unicorn/Sidekiq
-- DB containers / Redis containers
-- HAProxy (router + app server)
-- ELK for logs
-- Prometheus + Alert manager for monitoring
-- jemalloc 3.6.0
+- Building block, tips from Dev
+- Deploying
+- Monitoring
+- Quick fix engineering
 
 ---
 
-### App container tricks
+### Testing
 
-- Unicorn master forks Sidekiq workers
-- Unicorn master monitors Sidekiq
-- Drain requests on stop
+- `bin/rake autospec`
+- `bin/turbo_rspec`
 
 ---
 
@@ -44,7 +74,16 @@
 
 ```ruby
 MessageBus.publish("/notifications", user_ids: [100])
+MessageBus.subscribe("/notifications") do |n|
+   ...
+end
 ```
+
+```javascript
+MessageBus.subscribe("/notifications", (m) => {...});
+```
+
+---
 
 ### Defer queue
 
@@ -78,15 +117,84 @@ end
 
 ### Anonymous Cache
 
+- Why?
 - Backed by Redis
 - Also throttles
 - Switch to anon mode when overloaded
+- Opt-in
+
+```
+discourse_expires_in(1.minute)
+```
 
 ---
 
-### Dev Ops at Discourse
+### How we host?
 
--
+- Early adopters of Docker
+- App containers with Nginx/Unicorn/Sidekiq
+- DB containers / Redis containers
+- HAProxy (router + app server)
+- ELK for logs
+- Prometheus + Alert manager for monitoring
+- jemalloc 3.6.0
+
+
+---
+
+### App container tricks
+
+- Unicorn master forks Sidekiq workers
+- Unicorn master monitors Sidekiq
+- Drain requests on stop
+
+```
+./mothership deploy boingboing
+```
+
+---
+
+### Containers and production testing
+
+- Test Ruby upgrades in production, side-by-side
+- Test Rails upgrades in production, side-by-side
+
+---
+
+
+### Monitoring
+
+- prometheus_exporter gem / plugin (Why?)
+- various exporter (haproxy, redis, cadvisor, pg, node)
+
+---
+
+![bg height: 90%](median.png)
+
+---
+
+![bg height: 90%](99th.png)
+
+---
+
+![bg height: 85%](cpu.png)
+
+---
+
+![bg height: 85%](memory.png)
+
+---
+
+![bg height: 60%](heaps.png)
+
+---
+
+![bg height: 85%](v8.png)
+
+
+---
+
+![bg height: 85%](memory_rails6.png)
 
 ---
 
@@ -95,7 +203,7 @@ end
 ---
 
 
-### My toolbox
+### Quick fix engineering
 
 - rbtrace
 - stackprof
@@ -171,8 +279,21 @@ T_COMPLEX: 1
 ```
 
 ---
+### Rack Mini Profiler
 
-### Ruby pains
+![bg right height: 100%](mini_profiler.png)
+
+---
+
+### Current pains
 
 - Memory
-- Slow test suite
+- Slow/flakey test suite
+
+
+---
+
+### How you can help?
+
+- All diagnostic gems are open source
+
