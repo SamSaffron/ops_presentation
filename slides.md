@@ -66,6 +66,7 @@ style: |
 
 - `bin/rake autospec`
 - `bin/turbo_rspec`
+- `fab!`
 
 ---
 
@@ -90,7 +91,7 @@ MessageBus.subscribe("/notifications", (m) => {...});
 
 ### Powered by message_bus
 
-```
+```ruby
 # shard aware, cross process
 SiteSetting.title = "some title"
 
@@ -106,7 +107,7 @@ c.delete("bob")
 
 ### mini_sql
 
-```
+```ruby
 pg_conn = PG.connect(db_name: 'my_db')
 conn = MiniSql::Connection.get(pg_conn)
 
@@ -129,7 +130,7 @@ p conn.query_hash('select 1 as a, 2 as b union select 3, 4')
 
 ### mini_sql
 
-```
+```ruby
 builder = conn.build("select * from topics /*where*/ /*limit*/")
 
 builder.where('created_at > ?', Time.now - 400)
@@ -150,12 +151,12 @@ end
 
 ### mini_sql
 
-```
+```ruby
 
 t = conn.query("select * from topics limit 1").first
 # keep in mind ... t.title works!
 
-vs
+# vs
 
 Topic.first
 
@@ -423,9 +424,11 @@ total       | allocations | frees     | mean_life | max_life | location
 
 ---
 
-### How you can help?
+### How you can get involved?
 
 - Contributions to diagnostic gems are welcome!
+
+- Discourse is open source, some patterns can be extracted
 
 - [rubybench.com](https://rubybench.com)
 
